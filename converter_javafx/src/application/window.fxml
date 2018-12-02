@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="375.0" prefWidth="843.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" layoutX="76.0" layoutY="43.0" prefHeight="17.0" prefWidth="208.0" text="CURRENT PRICE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label alignment="CENTER" layoutX="285.0" layoutY="43.0" prefHeight="17.0" prefWidth="208.0" text="BEFORE EXCHANGE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label layoutX="45.0" layoutY="219.0" prefHeight="17.0" prefWidth="61.0" text="You have:" />
+            <RadioButton fx:id="radioButtonFee_0_1_percent" layoutX="373.0" layoutY="210.0" mnemonicParsing="false" onAction="#pressradioButtonForFee_0_1_percent" text="0.1%" />
+            <RadioButton fx:id="radioButtonFee_0_2_percent" layoutX="373.0" layoutY="236.0" mnemonicParsing="false" onAction="#pressradioButtonForFee_0_2_percent" text="0.2%" />
+            <Button fx:id="buttonBuy" layoutX="320.0" layoutY="266.0" mnemonicParsing="false" onAction="#pressbuttonBuy" style="-fx-background-color: GREEN;" text="BUY">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="buttonSell" layoutX="426.0" layoutY="266.0" mnemonicParsing="false" onAction="#pressbuttonSell" style="-fx-background-color: RED;" text="SELL">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Label alignment="CENTER" layoutX="289.0" layoutY="74.0" prefHeight="17.0" prefWidth="100.0" text="amount" textFill="#1402a1" />
+            <Label alignment="CENTER" layoutX="396.0" layoutY="74.0" prefHeight="17.0" prefWidth="100.0" text="cost" textFill="#1402a1" />
+            <TextField fx:id="amountForBtcExchange" layoutX="289.0" layoutY="95.0" onAction="#enterAmountForBtcExchange" onKeyReleased="#enterAmountForBtcExchange" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="amountForLtcExchange" layoutX="289.0" layoutY="129.0" onAction="#enterAmountForLtcExchange" onKeyReleased="#enterAmountForLtcExchange" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="amountForXrpExchange" layoutX="289.0" layoutY="165.0" onAction="#enterAmountForXrpExchange" onKeyReleased="#enterAmountForXrpExchange" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="costForBtc" layoutX="396.0" layoutY="95.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="costForLtc" layoutX="396.0" layoutY="129.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="costForXrp" layoutX="396.0" layoutY="165.0" prefHeight="25.0" prefWidth="100.0" />
+            <RadioButton fx:id="radioButtonIfWantToBuy" layoutX="100.0" layoutY="74.0" mnemonicParsing="false" onAction="#pressradioButtonIfWantToBuy" prefHeight="17.0" prefWidth="52.0" text="BUY" />
+            <RadioButton fx:id="radioButtonIfWantToSell" layoutX="207.0" layoutY="74.0" mnemonicParsing="false" onAction="#pressradioButtonIfWantToSell" prefHeight="17.0" prefWidth="52.0" text="SELL" />
+            <Label alignment="CENTER" layoutX="14.0" layoutY="279.0" prefHeight="17.0" prefWidth="24.0" text="BTC" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="814.0" />
+            <Label layoutX="14.0" layoutY="245.0" prefHeight="17.0" prefWidth="24.0" text="USD" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="245.0" />
+            <Label layoutX="15.0" layoutY="335.0" text="XRP" />
+            <Label layoutX="16.0" layoutY="307.0" prefHeight="17.0" prefWidth="20.0" text="LTC" />
+            <Label fx:id="showMeMyBTC" layoutX="50.0" layoutY="279.0" prefHeight="17.0" prefWidth="113.0" style="-fx-background-color: white;" />
+            <Label fx:id="showMeMyUSD" layoutX="50.0" layoutY="245.0" prefHeight="17.0" prefWidth="113.0" style="-fx-background-color: white;" />
+            <Label fx:id="showMeMyXRP" layoutX="50.0" layoutY="335.0" prefHeight="17.0" prefWidth="113.0" style="-fx-background-color: white;" />
+            <Label fx:id="showMeMyLTC" layoutX="50.0" layoutY="307.0" prefHeight="17.0" prefWidth="113.0" style="-fx-background-color: white;" />
+            <TextField fx:id="amountForBtcExchangeWithoutFee" layoutX="507.0" layoutY="95.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="amountForLtcExchangeWithoutFee" layoutX="507.0" layoutY="128.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="amountForXrpExchangeWithoutFee" layoutX="507.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="feeForBtcExchange" layoutX="614.0" layoutY="95.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="feeForLtcExchange" layoutX="614.0" layoutY="128.0" prefHeight="25.0" prefWidth="100.0" />
+            <TextField fx:id="feeForXrpExchange" layoutX="614.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0" />
+            <Label alignment="CENTER" layoutX="503.0" layoutY="43.0" prefHeight="17.0" prefWidth="208.0" text="AFTER EXCHANGE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label alignment="CENTER" layoutX="507.0" layoutY="74.0" prefHeight="17.0" prefWidth="100.0" text="amount(-fee)" textAlignment="CENTER" textFill="#1402a1" />
+            <Label alignment="CENTER" layoutX="607.0" layoutY="74.0" prefHeight="17.0" prefWidth="100.0" text="fee" textFill="#1402a1" />
+            <Label alignment="CENTER" layoutX="12.0" layoutY="99.0" prefHeight="17.0" prefWidth="52.0" text="BTC/USD" textFill="#1402a1" />
+            <Label alignment="CENTER" layoutX="11.0" layoutY="132.0" prefHeight="17.0" prefWidth="52.0" text="LTC/USD" textFill="#1402a1" />
+            <Label alignment="CENTER" layoutX="12.0" layoutY="169.0" prefHeight="17.0" prefWidth="52.0" text="XRP/USD" textFill="#1402a1" />
+            <Label fx:id="labelBTC_buy" layoutX="76.0" layoutY="95.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#08b519" />
+            <Label fx:id="labelLTC_buy" layoutX="76.0" layoutY="129.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#08b519" />
+            <Label fx:id="labelXRP_buy" layoutX="76.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#08b519" />
+            <Label fx:id="labelBTC_sell" layoutX="183.0" layoutY="95.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#c60505" />
+            <Label fx:id="labelLTC_sell" layoutX="183.0" layoutY="130.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#c60505" />
+            <Label fx:id="labelXRP_sell" layoutX="183.0" layoutY="164.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white;" textFill="#c60505" />
+            <Button fx:id="buttonRefresh" layoutX="200.0" layoutY="275.0" mnemonicParsing="false" onAction="#buttonRefreshBalance" prefHeight="25.0" prefWidth="67.0" text="REFRESH" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
