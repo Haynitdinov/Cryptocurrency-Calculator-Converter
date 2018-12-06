@@ -15,19 +15,18 @@ import javafx.scene.input.KeyEvent;
 public class Controller {
 
 	/**
-	 * create object exmo
-	 * then convert to JSON object
+	 * create object exmo then convert to JSON object
 	 * 
 	 * @param your private key
 	 * @param your private secret
 	 */
-	static Exmo exmo = new Exmo("your_key","your_secret");
+	static Exmo exmo = new Exmo("your_key", "your_secret");
 	static JSONObject jsonTicker = new JSONObject(exmo.Request("ticker", null));
 	JSONObject jsonBalances = new JSONObject(exmo.Request("user_info", null));
 
-	
 	/**
-	 * declaration of variables extracted from the request
+	 * declaration of variables extracted from the request BTC, LTC, XRP sell and
+	 * buy prices
 	 */
 	private BigDecimal btcBuyPrice = new BigDecimal(jsonTicker.getJSONObject("BTC_USD").getString("buy_price"));
 	private BigDecimal btcSellPrice = new BigDecimal(jsonTicker.getJSONObject("BTC_USD").getString("sell_price"));
@@ -36,15 +35,23 @@ public class Controller {
 	private BigDecimal xrpBuyPrice = new BigDecimal(jsonTicker.getJSONObject("XRP_USD").getString("buy_price"));
 	private BigDecimal xrpSellPrice = new BigDecimal(jsonTicker.getJSONObject("XRP_USD").getString("sell_price"));
 
+	/**
+	 * declaration of variables extracted from private request Our balance: USD,
+	 * BTC, LTC, XRP
+	 */
 	private String balanceUsd = jsonBalances.getJSONObject("balances").getString("USD");
 	private String balanceBtc = jsonBalances.getJSONObject("balances").getString("BTC");
 	private String balanceLtc = jsonBalances.getJSONObject("balances").getString("LTC");
 	private String balanceXrp = jsonBalances.getJSONObject("balances").getString("XRP");
 
-	BigDecimal fee = new BigDecimal("0");
+	// declaration of fee variables that we use to calculation
+	BigDecimal fee = new BigDecimal("0.0");
 	private final BigDecimal FEE_01 = new BigDecimal("0.001");
 	private final BigDecimal FEE_02 = new BigDecimal("0.002");
 
+	/**
+	 * declaration of price and amount variables that we use to calculation
+	 */
 	private static BigDecimal priceBtc = new BigDecimal("0.0");
 	private static BigDecimal priceLtc = new BigDecimal("0.0");
 	private static BigDecimal priceXrp = new BigDecimal("0.0");
@@ -139,20 +146,22 @@ public class Controller {
 	@FXML
 	private Label showMeMyXRP;
 
-	
-
-	/**
-	 * This method show our balance and current price
-	 */
+	// This method show our balance and current price after click refresh button
 	public void buttonRefreshBalance() {
 
+		// Show what is our current balance
 		showMeMyUSD.setText(balanceUsd.toString());
 		showMeMyBTC.setText(balanceBtc.toString());
 		showMeMyLTC.setText(balanceLtc.toString());
 		showMeMyXRP.setText(balanceXrp.toString());
 
+		// create new JSON object for checking our balance
 		JSONObject jsonTicker2 = new JSONObject(exmo.Request("ticker", null));
 
+		/**
+		 * declaration of variables extracted from the new request BTC, LTC, XRP sell
+		 * and buy prices
+		 */
 		BigDecimal btcBuyPrice = new BigDecimal(jsonTicker2.getJSONObject("BTC_USD").getString("buy_price"));
 		BigDecimal btcSellPrice = new BigDecimal(jsonTicker2.getJSONObject("BTC_USD").getString("sell_price"));
 		BigDecimal ltcBuyPrice = new BigDecimal(jsonTicker2.getJSONObject("LTC_USD").getString("buy_price"));
@@ -160,6 +169,7 @@ public class Controller {
 		BigDecimal xrpBuyPrice = new BigDecimal(jsonTicker2.getJSONObject("XRP_USD").getString("buy_price"));
 		BigDecimal xrpSellPrice = new BigDecimal(jsonTicker2.getJSONObject("XRP_USD").getString("sell_price"));
 
+		// show in fields current sell and buy prices
 		labelBTC_buy.setText(btcBuyPrice.toString());
 		labelLTC_buy.setText(ltcBuyPrice.toString());
 		labelXRP_buy.setText(xrpBuyPrice.toString());
@@ -169,6 +179,11 @@ public class Controller {
 
 	}
 
+	/**
+	 * Click on radio button fee
+	 * 
+	 * @return fee (that user select)
+	 */
 	private BigDecimal fee() {
 		if (radioButtonFee_0_1_percent.isSelected())
 			fee = FEE_01;
@@ -179,7 +194,7 @@ public class Controller {
 	}
 
 	/**
-	 * This method we use to check if input is a number
+	 * This method we use to check if String is a number
 	 * 
 	 * @param string
 	 * @return true or false
@@ -194,7 +209,9 @@ public class Controller {
 	}
 
 	/**
-	 * Create a buy order only if inputed amount is bigger than zero.
+	 * Create a buy order only if inputed amount is bigger than zero. This method
+	 * can create simultaneously 1 - 3 orders.
+	 * 
 	 * @param event
 	 */
 	public void pressbuttonBuy(ActionEvent event) {
@@ -233,7 +250,9 @@ public class Controller {
 	}
 
 	/**
-	 * Create a sell order only if inputed amount is bigger than zero.
+	 * Create a sell order only if inputed amount is bigger than zero. This method
+	 * can create simultaneously 1 - 3 orders.
+	 * 
 	 * @param event
 	 */
 	public void pressbuttonSell(ActionEvent event) {
@@ -271,34 +290,37 @@ public class Controller {
 	}
 
 	/**
-	 * This method we use to calculate profit
+	 * This method we use to calculate cost, cost without fee and fee based on users choice
 	 * 
-	 * @param amount
+	 * @param amount (input from user)
 	 * @param textFieldAmount
 	 * @param textFieldCost
-	 * @param price
+	 * @param price (current sell/buy price)
 	 * @param textFieldFee
 	 * @param amountWithoutFee
-	 * @param currentFee
+	 * @param currentFee (0.1% or 0.2%)
 	 */
 	private void calculateAll(BigDecimal amount, TextField textFieldAmount, TextField textFieldCost, BigDecimal price,
 			TextField textFieldFee, TextField amountWithoutFee, BigDecimal currentFee) {
-		
-		try{
+
+		try {
 			amount = new BigDecimal(textFieldAmount.getText());
-		textFieldCost.setText(Calculation.cost(amount, price).toString());
-		textFieldFee
-				.setText(Calculation.feeWithoutCost(new BigDecimal(textFieldCost.getText()), currentFee).toString());
-		amountWithoutFee.setText(Calculation
-				.costWithoutFee(new BigDecimal(textFieldCost.getText()), new BigDecimal(textFieldFee.getText()))
-				.toString());
-		}
-		catch(Exception ex) {
+			textFieldCost.setText(Calculation.cost(amount, price).toString());
+			textFieldFee.setText(
+					Calculation.feeWithoutCost(new BigDecimal(textFieldCost.getText()), currentFee).toString());
+			amountWithoutFee.setText(Calculation
+					.costWithoutFee(new BigDecimal(textFieldCost.getText()), new BigDecimal(textFieldFee.getText()))
+					.toString());
+		} catch (Exception ex) {
 			ex.getMessage();
 		}
 
 	}
 
+	/**
+	 * This method check if inputed value is a number than calls method calculateAll for BTC 
+	 * @param event
+	 */
 	public void enterAmountForBtcExchange(KeyEvent event) {
 		if (isNumber(amountForBtcExchange.getText())) {
 			this.calculateAll(amountBtc, amountForBtcExchange, costForBtc, priceBtc, feeForBtcExchange,
@@ -308,6 +330,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * This method check if inputed value is a number than calls method calculateAll for LTC 
+	 * @param event
+	 */
 	public void enterAmountForLtcExchange(KeyEvent event) {
 		if (isNumber(amountForLtcExchange.getText())) {
 			this.calculateAll(amountLtc, amountForLtcExchange, costForLtc, priceLtc, feeForLtcExchange,
@@ -315,9 +341,12 @@ public class Controller {
 		} else {
 			event.consume();
 		}
-
 	}
 
+	/**
+	 * This method check if inputed value is a number than calls method calculateAll for XRP 
+	 * @param event
+	 */
 	public void enterAmountForXrpExchange(KeyEvent event) {
 		if (isNumber(amountForXrpExchange.getText())) {
 
@@ -328,6 +357,14 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * This method check if radio button Buy is selected.
+	 * If it is:
+	 * 	 than buy prices loaded from exmo are assigned to each currency price;
+	 * 	 than unselect radio button Sell 
+	 * 	 than call method calculateAll
+	 * @param event
+	 */
 	public void pressradioButtonIfWantToBuy(ActionEvent event) {
 		try {
 			if (radioButtonIfWantToBuy.isSelected()) {
@@ -349,6 +386,14 @@ public class Controller {
 
 	}
 
+	/**
+	 * This method check if radio button Sell is selected.
+	 * If it is:
+	 * 	 than sell prices loaded from exmo are assigned to each currency price;
+	 * 	 than unselect radio button Buy 
+	 * 	 than call method calculateAll
+	 * @param event
+	 */
 	public void pressradioButtonIfWantToSell(ActionEvent event) {
 		try {
 			if (radioButtonIfWantToSell.isSelected()) {
@@ -369,6 +414,13 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * This method check if radio button 0.1% fee is selected.
+	 * If it is:
+	 * 	 than unselect radio button 0.2% fee 
+	 * 	 than call method calculateAll
+	 * @param event
+	 */
 	public void pressradioButtonForFee_0_1_percent(ActionEvent event) {
 		try {
 			if (radioButtonFee_0_1_percent.isSelected()) {
@@ -386,6 +438,13 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * This method check if radio button 0.2% fee is selected.
+	 * If it is:
+	 * 	 than unselect radio button 0.1% fee 
+	 * 	 than call method calculateAll
+	 * @param event
+	 */
 	public void pressradioButtonForFee_0_2_percent(ActionEvent event) {
 		try {
 			if (radioButtonFee_0_2_percent.isSelected()) {
